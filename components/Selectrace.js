@@ -10,12 +10,11 @@ import {
 
 import { availableYears, getMeetings, getSession } from "@/lib/driversStatus";
 
-export default function SelectRace() {
+export default function SelectRace({selectedSession, setSelectedSession}) {
   const [selectedYear, setSelectedYear] = useState(null);
   const years = availableYears();
   const [meetings, setMeetings] = useState();
   const [selectedEvent, setSelectedEvent] = useState("");
-  const [selectedSession, setSelectedSession] = useState("");
   const [sessions, setSessions] = useState([]);
   useEffect(() => {
     async function fetchMeetings() {
@@ -29,13 +28,14 @@ export default function SelectRace() {
     }
 
     fetchMeetings();
-    console.log("Selected Year:", selectedYear);
+    // console.log("Selected Year:", selectedYear);
   }, [selectedYear]);
 
   useEffect(() => {
     async function fetchSessions() {
       if (selectedEvent) {
         try {
+        console.log("data fetched")
           const data = await getSession(selectedEvent);
           setSessions(data);
           setSelectedSession(""); // Reset selected session when event changes
@@ -44,13 +44,13 @@ export default function SelectRace() {
         }
       }
     }
-
     fetchSessions();
-    console.log("Selected Event:", selectedEvent);
-  }, [selectedEvent]);
-  console.log("Selected Session:", selectedSession);
-  console.log("events:", meetings);
-  console.log("Available Years:", selectedYear);
+    // console.log("Selected Event:", selectedEvent);
+  }, [selectedEvent,setSelectedSession]);
+
+  // console.log("Selected Session:", selectedSession);
+  // console.log("events:", meetings);
+  // console.log("Available Years:", selectedYear);
   return (
     <div className="text-white">
       <div className="text-white">
