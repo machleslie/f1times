@@ -9,32 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  getdriversStatus,
-  getDriversWithIntervalAndPosition,
-} from "@/lib/driversStatus";
+import { getDriversWithIntervalAndPosition } from "@/lib/driversStatus";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 
-export default function Drivers({ selectedSession }) {
-  // const [drivers, setDrivers] = useState([]);
-
-  // useEffect(() => {
-  //   async function fetchDrivers() {
-  //     try {
-  //       console.log("data fetched");
-  //       const data = await getDriversWithIntervalAndPosition(selectedSession);
-  //       setDrivers(data);
-  //     } catch (error) {
-  //       console.error("Error fetching drivers:", error);
-  //     }
-  //   }
-
-  //   if (selectedSession) {
-  //     fetchDrivers();
-  //   }
-  // }, [selectedSession]);
-
+export default function Drivers({ selectedSession, setselectedDriver }) {
   const { data } = useQuery({
     queryKey: ["drivers", selectedSession],
     queryFn: () => getDriversWithIntervalAndPosition(selectedSession),
@@ -53,13 +31,20 @@ export default function Drivers({ selectedSession }) {
             <TableHead className={"text-white"}>Position</TableHead>
             <TableHead className={"text-white"}>Team Color</TableHead>
             <TableHead className={"text-white"}>Driver</TableHead>
-            <TableHead className={"text-white"}>Interval</TableHead>
+            <TableHead className={"text-white"}>Gap to Leader</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {drivers &&
             drivers.map((driver, index) => (
-              <TableRow key={index}>
+              <TableRow
+                key={index}
+                onClick={(e) => {
+                  console.log("Selected Driver:", driver.driver_number);
+                  setselectedDriver(driver.driver_number);
+                }}
+                className="cursor-pointer hover:bg-gray-700"
+              >
                 <TableCell>
                   <div className="col-span-1 flex items-center gap-2">
                     <span className="text-lg font-bold">{driver.position}</span>
@@ -80,7 +65,9 @@ export default function Drivers({ selectedSession }) {
                 </TableCell>
                 <TableCell>
                   <span className="text-sm text-gray-500">
-                    {driver.interval ? `+${driver.interval}` : "LEADER"}
+                    {driver.gap_to_leader
+                      ? `+${driver.gap_to_leader}`
+                      : "LEADER"}
                   </span>
                 </TableCell>
               </TableRow>

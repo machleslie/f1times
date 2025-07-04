@@ -10,6 +10,13 @@ import {
 } from "@/components/ui/table"
 
 export default function TimeTable({ laptime }) {
+  if (!laptime || laptime.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-gray-500">No data available</p>
+      </div>
+    );
+  }
   return (
     <div className="overflow-x-auto w-full mt-6">
   <div className=" border rounded-2xl overflow-hidden">

@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased ` }
       >
-        <div className=" h-screen bg-black"><Navbar/>
+        <div className="  bg-black"><Navbar/>
         {children}</div>
         
       </body>
